@@ -1,0 +1,6 @@
+console.log(data.weather[0].icon)
+
+    const icon = data.weather[0].icon;
+    const weatherDayLogo = `http://openweathermap.org/img/w/${icon}.png`;
+
+    {data.weather[0].description}

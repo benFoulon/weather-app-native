@@ -1,47 +1,73 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import axios from 'axios'
+import { StyleSheet, Text, View, Image } from 'react-native';
+import axios from 'axios';
 
-export default function CurrentWeather() {
-
-    const[data, setData] = useState([])
-
-    useEffect(() => {
-        axios.get("https://api.openweathermap.org/data/2.5/onecall?lat=50.4291723&lon=2.8319805&units=metric&lang=fr&exclude=minutely,hourly,alerts&appid=8c3a54c385c9c9d874d88f2cd6b3dda8")
-        .then(res =>{
-            setData(res.data.current)
-        })
-    }, [])
-
-    const today= new Date(data.dt*1000).toLocaleString("fr-FR", {day:"numeric", weekday:"long", month:"long", year:"numeric"});
+export default function CurrentWeather({data}) {
 
 
-    return (
-        <View>
+    const today= new Date(data.current.dt*1000).toLocaleString("fr-FR", {day:"numeric", weekday:"long", month:"long", year:"numeric"});
+    console.log(data.current.weather[0].icon);
+    const icon = data.current.weather[0].icon;
+    const weatherDayLogo = `http://openweathermap.org/img/w/${icon}.png`;
+
+        return (
+        <View style={styles.today}>
+
+            <View style={styles.leftSide}>
+                <Text style={styles.date}>
+                    {today}
+                </Text>
+                <Text style={styles.temp}>
+                    {data.current.temp}°C
+                </Text>
+                <Text style={styles.ressentie}>
+                    {data.current.feels_like}°C
+                </Text>
+            </View>
+
+            <View style={styles.iconAndDesc}>
+            <Image
+                style={styles.icon}
+                source={{
+                    uri: `${weatherDayLogo}`
+                }}
+            />
             <Text style={styles.date}>
-                {today}
+            {data.current.weather[0].description}
             </Text>
-            <Text style={styles.temp}>
-                {data.temp}°C
-            </Text>
-            <Text style={styles.ressentie}>
-                {data.feels_like}
-            </Text>
+            </View>
+
         </View>
     )
 }
 
 const styles= StyleSheet.create({
     date:{
-        fontSize: 28,
+        fontSize: 25,
         color: "white",
     },
+    leftSide:{
+        paddingTop: 40,
+    },
     temp:{
-        fontSize: 45,
+        fontSize: 35,
         color: "white",
     },
     ressentie:{
         fontSize: 15,
         color: "white",
+    },
+    icon:{
+        width: 100,
+        height: 100,
+    },
+    today:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent: 'space-around',
+        height:200,
+        paddingLeft: 15,
+        backgroundColor: '#0080ff',
+        paddingTop: 30,
     }
 })
