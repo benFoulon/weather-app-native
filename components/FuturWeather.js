@@ -20,7 +20,7 @@ export default function FuturWeather({data}) {
                     <Text style={styles.futurDate}>
                     {new Date(data.dt*1000).toLocaleString("fr-FR", {day:"numeric", weekday:"long", month:"long", year:"numeric"})}
                     </Text>
-                    <Text>
+                    <Text style={styles.weatherDesc}>
                         {data.weather[0].description}
                     </Text>
                 </View>
@@ -64,5 +64,8 @@ const styles = StyleSheet.create({
     },
     futurDate:{
         fontSize: 19,
+    },
+    weatherDesc:{
+        textAlign:'center',
     }
 })
